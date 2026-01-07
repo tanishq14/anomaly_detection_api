@@ -488,9 +488,9 @@ function showImagePreview(file, type) {
     const imgId = type === 'xray' ? 'xrayPreviewImg' : 'previewImg';
     const fileNameId = type === 'xray' ? 'xrayFileName' : 'fileName';
 
-    const preview = document.getElementById('previewId');
-    const previewImg = document.getElementById('imgId');
-    const fileName = document.getElementById('fileNameId');
+    const preview = document.getElementById(previewId);
+    const previewImg = document.getElementById(imgId);
+    const fileName = document.getElementById(fileNameId);
 
     if (file && file.type.startsWith('image/')) {
         const reader = new FileReader();
@@ -546,7 +546,7 @@ function displayMVTecResults(data) {
     let html = `
         <div class="result-card ensemble-result" style="border-left: 5px solid ${resultColor};">
 
-            ${imageInfo.category_icon ? `<div class="product-category">${imageInfo.category_icon} ${imageInfo.category.toUpperCase}</div>` : ''}
+            ${imageInfo.category_icon ? `<div class="product-category">${imageInfo.category_icon} ${imageInfo.category.toUpperCase()}</div>` : ''}
 
             <h3 style="color: ${resultColor};">${resultIcon} Quality Inspection: ${ensemble.prediction}</h3>
 
@@ -670,7 +670,7 @@ function initXrayForm() {
         fileInput.addEventListener('change', (e) => {
             const file = e.target.files[0];
             if (file) {
-                showImageyPreview(file);
+                showImagePreview(file);
             }
         });
     }

@@ -164,52 +164,60 @@ class MVTecAnomalyDetector:
         img_tensor = self.transform(img).unsqueeze(0).to(self.device)
         
         with torch.no_grad():
-            features = self.resnet(img_tensor).cpu().numpy()
+            features = self.resnet(img_tensor).cpu().numpy().squeeze()
         # features should be shape (1, D)
         if features.ndim == 1:
             features = features.reshape(1, -1)
 
         raw_dim = features.shape[1]
 
-        # Decide order of scaling and PCA based on fitted shapes to avoid mismatches
-        try:
-            # If scaler was trained on raw feature dim, apply scaler first then PCA
-            if self.scaler is not None and hasattr(self.scaler, 'n_features_in_') and self.scaler.n_features_in_ == raw_dim:
+        if self.scaler is not None:
+            if hasattr(self.scaler, 'n_features_in_') and self.scaler.n_features_in_== raw_dim:
                 features = self.scaler.transform(features)
-                if self.pca is not None:
-                    features = self.pca.transform(features)
-            # Else if PCA expects raw_dim input, apply PCA first then scaler
-            elif self.pca is not None and hasattr(self.pca, 'n_features_in_') and self.pca.n_features_in_ == raw_dim:
-                features = self.pca.transform(features)
-                if self.scaler is not None and hasattr(self.scaler, 'n_features_in_') and self.scaler.n_features_in_ == features.shape[1]:
-                    features = self.scaler.transform(features)
             else:
-                # Safer fallback: only apply transformations when fitted input dims match
-                scaler_in = getattr(self.scaler, 'n_features_in_', None)
-                pca_in = getattr(self.pca, 'n_features_in_', None)
-                pca_out = getattr(self.pca, 'n_components_', None)
+                raise RuntimeError(
+                    f"Scaler input dimension mismatch: expected {self.scaler.n_features_in_}, got {raw_dim}"
+                )
 
-                # If scaler was fitted on raw features, apply scaler then PCA
-                if self.scaler is not None and scaler_in == raw_dim:
-                    features = self.scaler.transform(features)
-                    if self.pca is not None:
-                        features = self.pca.transform(features)
-                # Else if PCA expects raw_dim and produces scaler-compatible output, apply PCA then scaler
-                elif self.pca is not None and pca_in == raw_dim and self.scaler is not None and scaler_in == pca_out:
-                    features = self.pca.transform(features)
-                    features = self.scaler.transform(features)
-                else:
-                    # Cannot safely apply scaler/PCA due to shape mismatch — provide clear error
-                    raise RuntimeError(
-                        f"Cannot apply scaler/PCA: raw_features={raw_dim}, scaler.n_features_in_={scaler_in}, pca.n_features_in_={pca_in}, pca.n_components_={pca_out}"
-                    )
-        except Exception as e:
-            # Provide a clear debug message about expected/found shapes
-            scaler_in = getattr(self.scaler, 'n_features_in_', None)
-            pca_in = getattr(self.pca, 'n_features_in_', None)
-            raise RuntimeError(
-                f"Feature preprocessing failed: {e}. Raw features={raw_dim}, scaler.n_features_in_={scaler_in}, pca.n_features_in_={pca_in}"
-            )
+        # # Decide order of scaling and PCA based on fitted shapes to avoid mismatches
+        # try:
+        #     # If scaler was trained on raw feature dim, apply scaler first then PCA
+        #     if self.scaler is not None and hasattr(self.scaler, 'n_features_in_') and self.scaler.n_features_in_ == raw_dim:
+        #         features = self.scaler.transform(features)
+        #         if self.pca is not None:
+        #             features = self.pca.transform(features)
+        #     # Else if PCA expects raw_dim input, apply PCA first then scaler
+        #     elif self.pca is not None and hasattr(self.pca, 'n_features_in_') and self.pca.n_features_in_ == raw_dim:
+        #         features = self.pca.transform(features)
+        #         if self.scaler is not None and hasattr(self.scaler, 'n_features_in_') and self.scaler.n_features_in_ == features.shape[1]:
+        #             features = self.scaler.transform(features)
+        #     else:
+        #         # Safer fallback: only apply transformations when fitted input dims match
+        #         scaler_in = getattr(self.scaler, 'n_features_in_', None)
+        #         pca_in = getattr(self.pca, 'n_features_in_', None)
+        #         pca_out = getattr(self.pca, 'n_components_', None)
+
+        #         # If scaler was fitted on raw features, apply scaler then PCA
+        #         if self.scaler is not None and scaler_in == raw_dim:
+        #             features = self.scaler.transform(features)
+        #             if self.pca is not None:
+        #                 features = self.pca.transform(features)
+        #         # Else if PCA expects raw_dim and produces scaler-compatible output, apply PCA then scaler
+        #         elif self.pca is not None and pca_in == raw_dim and self.scaler is not None and scaler_in == pca_out:
+        #             features = self.pca.transform(features)
+        #             features = self.scaler.transform(features)
+        #         else:
+        #             # Cannot safely apply scaler/PCA due to shape mismatch — provide clear error
+        #             raise RuntimeError(
+        #                 f"Cannot apply scaler/PCA: raw_features={raw_dim}, scaler.n_features_in_={scaler_in}, pca.n_features_in_={pca_in}, pca.n_components_={pca_out}"
+        #             )
+        # except Exception as e:
+        #     # Provide a clear debug message about expected/found shapes
+        #     scaler_in = getattr(self.scaler, 'n_features_in_', None)
+        #     pca_in = getattr(self.pca, 'n_features_in_', None)
+        #     raise RuntimeError(
+        #         f"Feature preprocessing failed: {e}. Raw features={raw_dim}, scaler.n_features_in_={scaler_in}, pca.n_features_in_={pca_in}"
+        #     )
 
         return features
     
@@ -278,31 +286,52 @@ class MVTecAnomalyDetector:
         
         """
         features = self.extract_features(image_path)
+
         results = {}
         predictions = []
         
         # 1. IsolationForest (with PCA)
         if 'isolation_forest' in self.models:
             model = self.models['isolation_forest']
-            feat = self.isolation_pca.transform(features) if self.isolation_pca else features
-            #feat = features
-            pred = model.predict(feat)[0]
-            score = float(model.score_samples(feat)[0]) if hasattr(model, 'score_samples') else None
             
-            results['isolation_forest'] = {
-                'prediction': 'Normal' if pred == 1 else 'Anomaly',
-                'score': score,
-                'confidence': self._calculate_confidence(score),
-                'raw_prediction': int(pred)
-            }
-            predictions.append(pred)
+            try:
+                if hasattr(self, 'isolation_pca') and self.isolation_pca is not None:
+                    feat = self.isolation_pca.transform(features)
+                elif self.pca is not None:
+                    feat = self.pca.transform(features)
+                else:
+                    feat = features
+        
+                pred = model.predict(feat)[0]
+                score = float(model.score_samples(feat)[0]) if hasattr(model, 'score_samples') else None
+                
+                results['isolation_forest'] = {
+                        'prediction': 'Normal' if pred == 1 else 'Anomaly',
+                        'score': score,
+                        'confidence': self._calculate_confidence(score),
+                        'raw_prediction': int(pred)
+                }
+                predictions.append(pred)
+    
+            except Exception as e:
+                print(f"Error in IsolationForest prediction: {e}")
         
         # 2. OneClassSVM
         if 'ocsvm' in self.models:
             model = self.models['ocsvm']
-            pred = model.predict(features)[0]
-            score = float(model.decision_function(features)[0]) if hasattr(model, 'decision_function') else None
-            
+
+            try:
+                pred = model.predict(features)[0]
+                score = float(model.decision_function(features)[0]) if hasattr(model, 'decision_function') else None
+            except ValueError:
+
+                if self.pca is not None:
+                    feat_reduced = self.pca.transform(features)
+                    pred = model.predict(feat_reduced)[0]
+                    score = float(model.decision_function(feat_reduced)[0]) 
+                else:
+                    raise
+
             results['ocsvm'] = {
                 'prediction': 'Normal' if pred == 1 else 'Anomaly',
                 'score': score,
@@ -314,21 +343,32 @@ class MVTecAnomalyDetector:
         # 3. EllipticEnvelope (with PCA)
         if 'elliptic_envelope' in self.models:
             model = self.models['elliptic_envelope']
-            feat = self.pca_elliptic.transform(features) if self.pca_elliptic else features
-            pred = model.predict(feat)[0]
-            score = float(model.decision_function(feat)[0]) if hasattr(model, 'decision_function') else None
+
+            try:
+                if hasattr(self, 'pca_elliptic') and self.pca_elliptic is not None:
+                    feat = self.pca_elliptic.transform(features)
+                elif self.pca is not None:
+                    feat = self.pca.transform(features)
+                else:
+                    feat = features
+
+                pred = model.predict(feat)[0]
+                score = float(model.decision_function(feat)[0]) if hasattr(model, 'decision_function') else None
+                
+                results['elliptic_envelope'] = {
+                    'prediction': 'Normal' if pred == 1 else 'Anomaly',
+                    'score': score,
+                    'confidence': self._calculate_confidence(score),
+                    'raw_prediction': int(pred)
+                }
+                predictions.append(pred)
+            except Exception as e:
+                print(f"Error in EllipticEnvelope prediction: {e}")
             
-            results['elliptic_envelope'] = {
-                'prediction': 'Normal' if pred == 1 else 'Anomaly',
-                'score': score,
-                'confidence': self._calculate_confidence(score),
-                'raw_prediction': int(pred)
-            }
-            predictions.append(pred)
-        
         # 4. LocalOutlierFactor
         if 'lof' in self.models:
             model = self.models['lof']
+            # LOF predict is only available in 'novelty' mode
             pred = model.predict(features)[0]
             score = float(model.decision_function(features)[0]) if hasattr(model, 'decision_function') else None
             
@@ -341,6 +381,10 @@ class MVTecAnomalyDetector:
             predictions.append(pred)
         
         # Ensemble: Majority Voting
+
+        if not predictions:
+            return {'error':'No models available for prediction.'}
+        
         normal_votes = predictions.count(1)
         anomaly_votes = predictions.count(-1)
         ensemble_pred = 'Normal' if normal_votes > anomaly_votes else 'Anomaly'
