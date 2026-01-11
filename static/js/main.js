@@ -670,7 +670,8 @@ function initXrayForm() {
         fileInput.addEventListener('change', (e) => {
             const file = e.target.files[0];
             if (file) {
-                showImagePreview(file);
+                showImagePreview(file, 'xray');
+                console.log("Selected file:", file);
             }
         });
     }
