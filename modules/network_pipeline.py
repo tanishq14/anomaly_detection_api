@@ -39,58 +39,60 @@ COLUMN_MAPPING = {
 TRAFFIC_PRESETS = {
     "normal_web_browsing": {
         "dur": 0.5, "proto": "tcp", "service": "http", "state": "FIN",
-        "spkts": 12, "dpkts": 10, "sbytes": 800, "dbytes": 15000,
-        "rate": 40.0, "sttl": 254, "dttl": 62, "sload": 12800.0, "dload": 30000.0,
-        "sloss": 0, "dloss": 0, "sinpkt": 41.67, "dinpkt": 50.0,
-        "sjit": 2.5, "djit": 3.0, "swin": 255, "stcpb": 3000000, "dtcpb": 1500000,
-        "dwin": 8192, "tcprtt": 0.001, "synack": 0.001, "ackdat": 0.001,
-        "smean": 66.67, "dmean": 1500.0, "trans_depth": 1, "response_body_len": 5000,
-        "ct_srv_src": 5, "ct_state_ttl": 10, "ct_dst_ltm": 10, "ct_src_dport_ltm": 5,
-        "ct_dst_sport_ltm": 5, "ct_dst_src_ltm": 10, "is_ftp_login": 0,
-        "ct_ftp_cmd": 0, "ct_flw_http_mthd": 1, "ct_src_ltm": 10,
-        "ct_srv_dst": 5, "is_sm_ips_ports": 0
+        "spkts": 12, "dpkts": 10, "sbytes": 800, "dbytes": 10000,
+        "rate": 40.0, "sttl": 31, "dttl": 29, "sload": 1200.0, "dload": 2000.0,
+        "sloss": 0, "dloss": 0, "sinpkt": 40.0, "dinpkt": 50.0,
+        "sjit": 2.0, "djit": 3.0, "swin": 255, "stcpb": 1000000, "dtcpb": 1000000,
+        "dwin": 255, "tcprtt": 0.01, "synack": 0.005, "ackdat": 0.005,
+        "smean": 66, "dmean": 1000, "trans_depth": 1, "response_body_len": 2000,
+        "ct_srv_src": 1, "ct_state_ttl": 0, "ct_dst_ltm": 1, "ct_src_dport_ltm": 1,
+        "ct_dst_sport_ltm": 1, "ct_dst_src_ltm": 1, "is_ftp_login": 0,
+        "ct_ftp_cmd": 0, "ct_flw_http_mthd": 1, "ct_src_ltm": 1,
+        "ct_srv_dst": 1, "is_sm_ips_ports": 0
     },
     
+    #This keeps sttl=254 or high packet counts to simulate suspicious transfers
     "file_transfer_ftp": {
         "dur": 2.5, "proto": "tcp", "service": "ftp", "state": "FIN",
         "spkts": 30, "dpkts": 25, "sbytes": 2000, "dbytes": 50000,
-        "rate": 20.0, "sttl": 254, "dttl": 62, "sload": 800.0, "dload": 20000.0,
+        "rate": 20.0, "sttl": 60, "dttl": 29, "sload": 800.0, "dload": 20000.0,
         "sloss": 0, "dloss": 0, "sinpkt": 83.33, "dinpkt": 100.0,
         "sjit": 5.0, "djit": 6.0, "swin": 255, "stcpb": 5000000, "dtcpb": 2000000,
         "dwin": 16384, "tcprtt": 0.002, "synack": 0.002, "ackdat": 0.002,
         "smean": 66.67, "dmean": 2000.0, "trans_depth": 0, "response_body_len": 0,
-        "ct_srv_src": 3, "ct_state_ttl": 8, "ct_dst_ltm": 8, "ct_src_dport_ltm": 3,
-        "ct_dst_sport_ltm": 3, "ct_dst_src_ltm": 8, "is_ftp_login": 1,
-        "ct_ftp_cmd": 5, "ct_flw_http_mthd": 0, "ct_src_ltm": 8,
+        "ct_srv_src": 3, "ct_state_ttl": 1, "ct_dst_ltm": 3, "ct_src_dport_ltm": 1,
+        "ct_dst_sport_ltm": 1, "ct_dst_src_ltm": 8, "is_ftp_login": 1,
+        "ct_ftp_cmd": 1, "ct_flw_http_mthd": 0, "ct_src_ltm": 3,
         "ct_srv_dst": 3, "is_sm_ips_ports": 0
     },
     
     "dns_query": {
         "dur": 0.001, "proto": "udp", "service": "dns", "state": "CON",
         "spkts": 2, "dpkts": 2, "sbytes": 146, "dbytes": 178,
-        "rate": 2000.0, "sttl": 254, "dttl": 129, "sload": 146000.0, "dload": 178000.0,
+        "rate": 2000.0, "sttl": 31, "dttl": 129, "sload": 146000.0, "dload": 178000.0,
         "sloss": 0, "dloss": 0, "sinpkt": 0.5, "dinpkt": 0.5,
         "sjit": 0.0, "djit": 0.0, "swin": 0, "stcpb": 0, "dtcpb": 0,
         "dwin": 0, "tcprtt": 0.0, "synack": 0.0, "ackdat": 0.0,
         "smean": 73.0, "dmean": 89.0, "trans_depth": 0, "response_body_len": 0,
-        "ct_srv_src": 15, "ct_state_ttl": 20, "ct_dst_ltm": 15, "ct_src_dport_ltm": 15,
-        "ct_dst_sport_ltm": 15, "ct_dst_src_ltm": 15, "is_ftp_login": 0,
-        "ct_ftp_cmd": 0, "ct_flw_http_mthd": 0, "ct_src_ltm": 20,
-        "ct_srv_dst": 15, "is_sm_ips_ports": 0
+        "ct_srv_src": 2, "ct_state_ttl": 0, "ct_dst_ltm": 2, "ct_src_dport_ltm": 1,
+        "ct_dst_sport_ltm": 1, "ct_dst_src_ltm": 2, "is_ftp_login": 0,
+        "ct_ftp_cmd": 0, "ct_flw_http_mthd": 0, "ct_src_ltm": 2,
+        "ct_srv_dst": 2, "is_sm_ips_ports": 0
     },
     
     "suspicious_scan": {
-        "dur": 0.01, "proto": "tcp", "service": "-", "state": "INT",
-        "spkts": 5, "dpkts": 0, "sbytes": 200, "dbytes": 0,
-        "rate": 500.0, "sttl": 254, "dttl": 0, "sload": 20000.0, "dload": 0.0,
-        "sloss": 0, "dloss": 5, "sinpkt": 2.0, "dinpkt": 0.0,
-        "sjit": 10.0, "djit": 0.0, "swin": 255, "stcpb": 1000000, "dtcpb": 0,
+        # High sttl (254) + High ct_ counts + Short duration = Classic Attack
+        "dur": 0.00001, "proto": "tcp", "service": "-", "state": "INT",
+        "spkts": 2, "dpkts": 0, "sbytes": 114, "dbytes": 0,
+        "rate": 100000.0, "sttl": 254, "dttl": 0, "sload": 100000000.0, "dload": 0.0,
+        "sloss": 0, "dloss": 0, "sinpkt": 0.01, "dinpkt": 0.0,
+        "sjit": 0.0, "djit": 0.0, "swin": 0, "stcpb": 0, "dtcpb": 0,
         "dwin": 0, "tcprtt": 0.0, "synack": 0.0, "ackdat": 0.0,
-        "smean": 40.0, "dmean": 0.0, "trans_depth": 0, "response_body_len": 0,
-        "ct_srv_src": 50, "ct_state_ttl": 1, "ct_dst_ltm": 100, "ct_src_dport_ltm": 50,
-        "ct_dst_sport_ltm": 1, "ct_dst_src_ltm": 100, "is_ftp_login": 0,
-        "ct_ftp_cmd": 0, "ct_flw_http_mthd": 0, "ct_src_ltm": 100,
-        "ct_srv_dst": 1, "is_sm_ips_ports": 1
+        "smean": 57.0, "dmean": 0.0, "trans_depth": 0, "response_body_len": 0,
+        "ct_srv_src":30, "ct_state_ttl": 6, "ct_dst_ltm": 15, "ct_src_dport_ltm": 15,
+        "ct_dst_sport_ltm": 15, "ct_dst_src_ltm": 30, "is_ftp_login": 0,
+        "ct_ftp_cmd": 0, "ct_flw_http_mthd": 0, "ct_src_ltm": 30,
+        "ct_srv_dst": 30, "is_sm_ips_ports": 0
     }
 }
 
