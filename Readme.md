@@ -1,17 +1,21 @@
-# 🤖 Multi-Domain Anomaly Detection API
+# 🤖 Techniques to Overcome Class Imbalance using Anomaly Detection  
 
 ![Python](https://img.shields.io/badge/python-3.8+-blue.svg)
 ![Flask](https://img.shields.io/badge/flask-2.0+-green.svg)
 ![PyTorch](https://img.shields.io/badge/PyTorch-1.9+-red.svg)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Status](https://img.shields.io/badge/Class_Imbalance-Solved-success.svg)
+![Ensemble Learning](https://img.shields.io/badge/Method-Ensemble_Learning-orange.svg)
 
-**AI-powered anomaly detection across Network Security, Manufacturing Quality Control, and Medical Diagnostics using ensemble machine learning.**
+**A specialized framework designed to handle extreme class imbalance by treating minority classes as anomalies. This project demonstrates high-precision detection across Network, Manufacturing quality control and Medical domains using machine learning methods.**
 
 ---
 
 ## 📋 Table of Contents
 
 - [Overview](#overview)
+- [Class Imbalance Strategy](#-class-imbalance-strategy)
+- [Case Study : Isolation Forest](#case-study--isolation-forest)
 - [Features](#features)
 - [System Requirements](#system-requirements)
 - [Installation](#installation)
@@ -30,16 +34,31 @@
 
 ## 🎯 Overview
 
-This project implements a **multi-domain anomaly detection system** that applies ensemble machine learning techniques across three distinct domains:
+This project addresses the "Imbalanced Data" problem in Machine Learning. In real-world scenarios like Network Intrusion or Medical Diagnosis, the "Anomaly" is often extremely rare. This API uses **Ensemble Anomaly Detection** to find those rare events without needing a perfectly balanced training set.
+
+<!-- This project implements a **multi-domain anomaly detection system** that applies ensemble machine learning techniques across three distinct domains:
 
 1. **🌐 Network Intrusion Detection** - Identify malicious network traffic (UNSW-NB15 dataset)
 2. **🏭 Product Quality Inspection** - Detect manufacturing defects (MVTec AD dataset)
 3. **🏥 Medical Image Analysis** - Analyze chest X-rays for abnormalities (NIH Chest X-ray14 dataset)
 
-Each module uses an **ensemble of multiple models** to achieve robust, accurate predictions with high confidence scores.
+Each module uses an **ensemble of multiple models** to achieve robust, accurate predictions with high confidence scores. -->
 
 ---
 
+## 🔧 Class Imbalance Strategy
+
+| Technique | Implementation | Benefit |
+| :--- | :--- | :--- |
+| **One-Class SVM** | Learns the boundary of "Normal" data. | Ignores the lack of minority samples. |
+| **Autoencoders** | Reconstructs input; high error = anomaly. | Self-supervised; no labels required. |
+| **Isolation Forest** | Isolates points in a tree structure. | Efficiently finds outliers in large data. |
+
+---
+## 🔬 Case Study : Isolation Forest
+> **The Theory:** Anomalies are "few and different." In a tree-based structure, they are isolated much faster (shorter path) than normal points (longer path). This allows the API to detect attacks even if they were never seen during training.
+
+---
 ## ✨ Features
 
 ### Core Capabilities
@@ -86,25 +105,27 @@ scipy>=1.7.0
 ## 🚀 Installation
 
 ### 1. Clone the Repository
-
+```Bash
 git clone https://github.com/tanishq14
 cd anomaly-detection-api
-
+```
 ### 2. Create Virtual Environment
-
+```CMD
 python -m venv anom_det
-
+```
 #### Activate (Linux/Mac)
-
-source venv/bin/activate
-
+```
+source anom_det/bin/activate
+```
 #### Activate (Windows)
-
-venv\Scripts\activate
-
+```CMD
+anom_det\Scripts\activate
+```
 ### 3. Install Dependencies
 
+```
 pip install -r requirements.txt
+```
 
 ### 4. Download/Train Models
 
@@ -115,10 +136,9 @@ models/xray/*.pkl, *.pt
 
 
 ### 5. Verify Installation
-
+```
 python check_system.py
-
-
+```
 If all checks pass ✅, you're ready to go!
 
 ---
@@ -127,14 +147,16 @@ If all checks pass ✅, you're ready to go!
 
 ### Start the API Server
 
+```
 python app.py
-
+```
 
 The API will be available at: [**http://localhost:5000**](http://localhost:5000)
 
 ### Test the API
 
 #### Network Detection
+```
 curl -X POST http://localhost:5000/api/predict/network
 -H "Content-Type: application/json"
 -d '{
@@ -148,7 +170,7 @@ curl -X POST http://localhost:5000/api/predict/network
 "dbytes": 15000,
 "rate": 40.0
 }'
-
+```
 
 #### Image Analysis (MVTec/X-ray)
 curl -X POST http://localhost:5000/api/predict/mvtec
@@ -178,8 +200,8 @@ curl -X POST http://localhost:5000/api/predict/xray
 
 ### Response Format
 
-All API responses follow this structure:
-
+#### All API responses follow this structure:
+```
 {
 "success": true,
 "timestamp": "2025-12-26T15:13:00.000000",
@@ -194,7 +216,7 @@ All API responses follow this structure:
 "processing_time": "0.234s"
 }
 }
-
+```
 
 For detailed API documentation, see [API_DOCUMENTATION.md](docs/API_DOCUMENTATION.md)
 
@@ -229,15 +251,15 @@ For dataset details, see [DATASETS.md](docs/DATASETS.md)
 ### System Overview
 
 User Input → Flask API → Pipeline Module → Ensemble Models → Prediction
-↓
+→
 Validation & Preprocessing
-↓
+→
 Feature Extraction (if image)
-↓
+→
 Parallel Model Execution
-↓
+→
 Majority Voting Ensemble
-↓
+→
 JSON Response + Confidence
 
 
@@ -270,7 +292,7 @@ JSON Response + Confidence
 ## 📝 Usage Examples
 
 ### Python API
-
+```python
 from modules import predict_network, predict_mvtec, predict_xray
 
 Network detection with preset
@@ -286,7 +308,7 @@ Medical X-ray analysis
 result = predict_xray('chest_xray.png')
 for model, data in result['supervised_models'].items():
 print(f"{model}: {data['prediction']} ({data['confidence']:.1f}%)")
-
+```
 
 ### Web Interface
 
@@ -299,33 +321,34 @@ print(f"{model}: {data['prediction']} ({data['confidence']:.1f}%)")
 
 ## 📁 Project Structure
 
+```text
 anomaly-detection-api/
-├── README.md # This file
-├── requirements.txt # Python dependencies
-├── app.py # Flask application
-├── check_system.py # System diagnostics
-├── modules/ # Pipeline modules
+├── README.md           # This file
+├── requirements.txt    # Python dependencies
+├── app.py              # Flask application
+├── check_system.py     # System diagnostics
+├── modules/            # Pipeline modules
 │ ├── __init__.py
 │ ├── network_pipeline.py
 │ ├── mvtec_pipeline.py
 │ └── xray_pipeline.py
-├── models/ # Trained models
+├── models/             # Trained models
 │ ├── network/
 │ ├── mvtec/
 │ └── xray/
-├── templates/ # HTML templates
-├── static/ # CSS/JS assets
-└── docs/ # Documentation
-
+├── templates/          # HTML templates
+├── static/             # CSS/JS assets
+└── docs/               # Documentation
+```
 ---
 
 ## 📈 Performance Metrics
 
-| Domain | Accuracy | Precision | Recall | F1-Score | Models |
-|--------|----------|-----------|--------|----------|--------|
-| **Network** | 99.2% | 98.5% | 99.1% | 98.8% | 4 |
-| **MVTec** | 95.8% | 94.2% | 96.1% | 95.1% | 4 |
-| **X-ray** | 92.3% | 91.8% | 92.7% | 92.2% | 7 |
+| Domain | Imabalance Ratio | Accuracy | Precision | Recall | F1-Score | Models |
+|--------|------------------|----------|-----------|--------|----------|--------|
+| **Network** | Extreme | 99.2% | 98.5% | 99.1% | 98.8% | 4 |
+| **MVTec** | High | 95.8% | 94.2% | 96.1% | 95.1% | 4 |
+| **X-ray** | Moderate | 92.3% | 91.8% | 92.7% | 92.2% | 7 |
 
 *Metrics calculated on respective test sets using ensemble predictions*
 
@@ -333,24 +356,30 @@ anomaly-detection-api/
 
 ## 🧪 Testing
 
-Run system diagnostics:
+### Run system diagnostics:
 Basic check
+```
 python check_system.py
+```
 
 Verbose output
+```
 python check_system.py --verbose
+```
 
 Attempt fixes
+```
 python check_system.py --fix
-
+```
 
 Run unit tests (if implemented):
+```
 pytest tests/
-
+```
 
 ---
 
-## 🚢 Deployment
+<!-- ## 🚢 Deployment
 
 For production deployment:
 
@@ -366,9 +395,9 @@ gunicorn -w 4 -b 0.0.0.0:8000 app:app
 
 4. **Enable HTTPS** with SSL certificates
 
-See [DEPLOYMENT.md](docs/DEPLOYMENT.md) for detailed instructions.
+See [DEPLOYMENT.md](docs/DEPLOYMENT.md) for detailed instructions. -->
 
----
+<!-- --- -->
 
 ## 🤝 Contributing
 
@@ -392,11 +421,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Tanishq Rahul Shelke**
 
-- Masters in Engineering (MEng) - Machine Learning Specialist
+- Masters in Engineering (MEng) - Machine Learning Engineer
 - Focus: Anomaly Detection, Ensemble Methods, Deep Learning
-- Email: your.email@example.com
-- LinkedIn: [Your LinkedIn](https://linkedin.com/in/yourprofile)
-- GitHub: [Your GitHub](https://github.com/yourusername)
+- LinkedIn: [Tanishq Shelke](https://www.linkedin.com/in/tanishq-rahul-s-614220210/)
+- GitHub: [Tanishq14](https://github.com/tanishq14)
 
 ---
 
@@ -413,12 +441,14 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 📞 Support
 
 For issues, questions, or suggestions:
-- Open an [Issue](https://github.com/yourusername/anomaly-detection-api/issues)
-- Email: your.email@example.com
+- Open an [Issue](https://github.com/tanishq14/anomaly-detection-api/issues)
 
 ---
 
 **⭐ If you find this project useful, please consider giving it a star!**
 
-*Last Updated: December 30, 2025*
+*Last Updated: February 1, 2026*
 # anomaly_detection_api
+
+## 📄 License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
