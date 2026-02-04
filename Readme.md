@@ -173,12 +173,14 @@ curl -X POST http://localhost:5000/api/predict/network
 ```
 
 #### Image Analysis (MVTec/X-ray)
+```
 curl -X POST http://localhost:5000/api/predict/mvtec
 -F "file=@product_image.png"
-
+```
+```
 curl -X POST http://localhost:5000/api/predict/xray
 -F "file=@chest_xray.png"
-
+```
 
 ---
 
@@ -218,31 +220,31 @@ curl -X POST http://localhost:5000/api/predict/xray
 }
 ```
 
-For detailed API documentation, see [API_DOCUMENTATION.md](docs/API_DOCUMENTATION.md)
+<!-- For detailed API documentation, see [API_DOCUMENTATION.md](docs/API_DOCUMENTATION.md) -->
 
 ---
 
 ## 📊 Datasets
 
-### Network: UNSW-NB15
+### Network: [UNSW-NB15](https://www.kaggle.com/datasets/mrwellsdavid/unsw-nb15)
 - **Records**: 2.5 million network flows
 - **Features**: 44 dimensions
 - **Attack Types**: 9 categories (DoS, Exploits, Reconnaissance, etc.)
 - **Split**: 80% train, 20% test
 
-### MVTec: Anomaly Detection
+### MVTec: [AD](https://www.mvtec.com/company/research/datasets/mvtec-ad)
 - **Images**: 5,000+ high-resolution product images
 - **Categories**: 15 product types
 - **Defects**: Cracks, scratches, contamination, missing parts
 - **Split**: Per-category train/test
 
-### X-ray: NIH Chest X-ray14
+### X-ray: [NIH Chest X-ray14](https://www.kaggle.com/datasets/nih-chest-xrays/data)
 - **Images**: 112,120 frontal chest X-rays
 - **Conditions**: 14 thoracic pathologies
 - **Classes**: Multi-label classification
 - **Resolution**: 224x224 (preprocessed)
 
-For dataset details, see [DATASETS.md](docs/DATASETS.md)
+<!-- For dataset details, see [DATASETS.md](docs/DATASETS.md) -->
 
 ---
 
