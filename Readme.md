@@ -86,7 +86,8 @@ Each module uses an **ensemble of multiple models** to achieve robust, accurate 
 - **Python**: 3.8 or higher
 - **RAM**: 8GB (16GB recommended for X-ray module)
 - **Storage**: 5GB for models and dependencies
-- **GPU**: Optional (CUDA-compatible for faster inference)
+- **GPU**: Optional (CUDA-compatible for faster inference) [PyTorch+cu117](https://pytorch.org/get-started/locally/#windows-installation)
+- **Note**: CUDA acceleration is used consistently across all pipelines (UNSW-NB15, MVTec AD, and NIH ChestXray14), particularly for CNN-based feature extraction and autoencoder inference. Device selection is handled dynamically (cuda if available, otherwise cpu), ensuring both efficiency and portability across systems.
 
 ### Python Dependencies
 
