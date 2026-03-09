@@ -6,8 +6,7 @@ Supports: Network Intrusion, MVTec Quality Inspection, X-ray Analysis
 Author: Tanishq Rahul Shelke
 Version: 1.0
 ============================================================================
-"""
-
+""" 
 from flask import Flask, request, render_template, jsonify
 import os
 import logging
