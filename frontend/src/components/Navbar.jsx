@@ -7,7 +7,7 @@ export default function Navbar() {
   const isActive = (path) => location.pathname === path ? 'active' : '';
 
   return (
-    <nav classN-ame="nav-bar">
+    <nav className="nav-bar">
       <ul>
         <li><Link to="/" className={isActive('/')}>Home</Link></li>
         <li><Link to="/network" className={isActive('/network')}>Network</Link></li>

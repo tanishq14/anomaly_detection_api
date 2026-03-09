@@ -7,6 +7,114 @@
  * ============================================================================
  */
 
+
+ /* ============================================================================
+   FEATURE CARDS (HOME PAGE)
+   ============================================================================ */
+
+.feature-cards {
+    display: grid;
+    /* This automatically puts them in 3 columns on desktop, 1 on mobile */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--spacing-lg);
+    margin: var(--spacing-lg) 0;
+}
+
+.feature-card {
+    background: var(--bg-white);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-md);
+    transition: all var(--transition-normal);
+    display: flex;
+    flex-direction: column;
+    border-top: 5px solid var(--primary-color);
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Custom top border colors for each domain */
+.network-card { border-top-color: var(--info-color); }
+.mvtec-card { border-top-color: var(--warning-color); }
+.xray-card { border-top-color: var(--success-color); }
+
+.card-icon {
+    font-size: 3.5rem;
+    margin-bottom: var(--spacing-sm);
+    text-align: center;
+}
+
+.feature-card h3 {
+    text-align: center;
+    color: var(--text-dark);
+    margin-bottom: var(--spacing-sm);
+    font-size: 1.4rem;
+}
+
+.card-description {
+    color: var(--text-gray);
+    text-align: center;
+    margin-bottom: var(--spacing-md);
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.card-details {
+    flex-grow: 1; /* Pushes the button to the bottom so all buttons align */
+    margin-bottom: var(--spacing-lg);
+}
+
+.card-details h4 {
+    color: var(--text-dark);
+    margin-top: var(--spacing-md);
+    margin-bottom: var(--spacing-xs);
+    font-size: 1.05rem;
+}
+
+.card-details ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin-bottom: var(--spacing-md);
+}
+
+.card-details li {
+    position: relative;
+    padding-left: 20px;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    color: var(--text-gray);
+}
+
+.card-details li::before {
+    content: "•";
+    color: var(--primary-color);
+    position: absolute;
+    left: 0;
+    font-weight: bold;
+}
+
+.card-btn {
+    display: block;
+    text-align: center;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    text-decoration: none;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    transition: all var(--transition-normal);
+    margin-top: auto; /* Forces button to the bottom of the card */
+}
+
+.card-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    color: white;
+}
+
 /* ============================================================================
    GLOBAL STYLES & RESET
    ============================================================================ */
