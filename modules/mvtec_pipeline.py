@@ -67,7 +67,7 @@ DATASET_CONFIG = {
 
 # Model paths
 MODEL_PATHS = {
-    'resnet_feature_extractor': 'models/mvtec/resnet_feature_extractor.pt',
+    'resnet_feature_extractor': 'models/mvtec/resnet34_feature_extractor.pt',
     'scaler': 'models/mvtec/scaler.pkl',
     'pca': 'models/mvtec/pca.pkl',  # General PCA for dimensionality reduction
     'ocsvm': 'models/mvtec/ocsvm.pkl',
@@ -91,7 +91,7 @@ class MVTecAnomalyDetector:
         
         # Load ResNet feature extractor
         if os.path.exists(MODEL_PATHS['resnet_feature_extractor']):
-            self.resnet = models.resnet34(pretrained=False)
+            self.resnet = models.resnet34(weights=None)
             self.resnet.fc = torch.nn.Identity()
             self.resnet.load_state_dict(
                 torch.load(MODEL_PATHS['resnet_feature_extractor'], map_location=self.device)
@@ -178,47 +178,7 @@ class MVTecAnomalyDetector:
                 raise RuntimeError(
                     f"Scaler input dimension mismatch: expected {self.scaler.n_features_in_}, got {raw_dim}"
                 )
-
-        # # Decide order of scaling and PCA based on fitted shapes to avoid mismatches
-        # try:
-        #     # If scaler was trained on raw feature dim, apply scaler first then PCA
-        #     if self.scaler is not None and hasattr(self.scaler, 'n_features_in_') and self.scaler.n_features_in_ == raw_dim:
-        #         features = self.scaler.transform(features)
-        #         if self.pca is not None:
-        #             features = self.pca.transform(features)
-        #     # Else if PCA expects raw_dim input, apply PCA first then scaler
-        #     elif self.pca is not None and hasattr(self.pca, 'n_features_in_') and self.pca.n_features_in_ == raw_dim:
-        #         features = self.pca.transform(features)
-        #         if self.scaler is not None and hasattr(self.scaler, 'n_features_in_') and self.scaler.n_features_in_ == features.shape[1]:
-        #             features = self.scaler.transform(features)
-        #     else:
-        #         # Safer fallback: only apply transformations when fitted input dims match
-        #         scaler_in = getattr(self.scaler, 'n_features_in_', None)
-        #         pca_in = getattr(self.pca, 'n_features_in_', None)
-        #         pca_out = getattr(self.pca, 'n_components_', None)
-
-        #         # If scaler was fitted on raw features, apply scaler then PCA
-        #         if self.scaler is not None and scaler_in == raw_dim:
-        #             features = self.scaler.transform(features)
-        #             if self.pca is not None:
-        #                 features = self.pca.transform(features)
-        #         # Else if PCA expects raw_dim and produces scaler-compatible output, apply PCA then scaler
-        #         elif self.pca is not None and pca_in == raw_dim and self.scaler is not None and scaler_in == pca_out:
-        #             features = self.pca.transform(features)
-        #             features = self.scaler.transform(features)
-        #         else:
-        #             # Cannot safely apply scaler/PCA due to shape mismatch — provide clear error
-        #             raise RuntimeError(
-        #                 f"Cannot apply scaler/PCA: raw_features={raw_dim}, scaler.n_features_in_={scaler_in}, pca.n_features_in_={pca_in}, pca.n_components_={pca_out}"
-        #             )
-        # except Exception as e:
-        #     # Provide a clear debug message about expected/found shapes
-        #     scaler_in = getattr(self.scaler, 'n_features_in_', None)
-        #     pca_in = getattr(self.pca, 'n_features_in_', None)
-        #     raise RuntimeError(
-        #         f"Feature preprocessing failed: {e}. Raw features={raw_dim}, scaler.n_features_in_={scaler_in}, pca.n_features_in_={pca_in}"
-        #     )
-
+            
         return features
     
     def predict(self, image_path, model_name='isolation_forest'):

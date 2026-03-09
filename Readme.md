@@ -35,7 +35,7 @@
 
 ## 🎯 Overview
 
-This project addresses the "Imbalanced Data" problem in Machine Learning. In real-world scenarios like Network Intrusion or Medical Diagnosis, the "Anomaly" is often extremely rare. This API uses **Ensemble Anomaly Detection** to find those rare events without needing a perfectly balanced training set.
+This project addresses the "Imbalanced Data" problem in Machine Learning. In real-world scenarios like Network Intrusion or Medical Diagnosis, the "Anomaly" is often extremely rare. This API uses **Ensemble Anomaly Detection** to find those rare events without needing a perfectly balanced training set. It is a production anomaly detection API built with FastAPI and PyTorch, designed for integration into industrial inspection, medical x-ray early disease detection and analysis or cybersecurity monitoring systems.
 
 <!-- This project implements a **multi-domain anomaly detection system** that applies ensemble machine learning techniques across three distinct domains:
 
@@ -106,7 +106,7 @@ scipy>=1.7.0
 
 ## 📁 Dataset Setup & Model Artifact Generation
 
-To generate the required trained models and serialized artifacts (.pkl files) used by the anomaly detection API, all Python notebooks in this repository must be executed end-to-end after setting up the datasets in the correct directory structure.
+To generate the required trained models and serialized artifacts (.pkl files) used by the anomaly detection API, all Python notebooks within the other repository [**MEng — Techniques to overcome class imbalance using anomaly/defect detection**](https://github.com/tanishq14/MEng-Computer-Vision-and-Artificial-Intelligence-Project-). This repository must be executed end-to-end after setting up the datasets in the correct directory structure.
 
 1. Download Datasets
 
@@ -486,7 +486,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 📞 Support
 
 For issues, questions, or suggestions:
-- Open an [Issue](https://github.com/tanishq14/anomaly-detection-api/issues)
+- Open an [Issue](https://github.com/tanishq14/anomaly_detection_api/issues)
 
 ---
 

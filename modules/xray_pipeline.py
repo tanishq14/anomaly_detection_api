@@ -289,7 +289,7 @@ MODEL_PATHS = {
     # 'logistic_regression': 'models/xray/logistic_regression.pt',
     # 'svm': 'models/xray/svm.pt',
     'decision_tree': 'models/xray/dt_model.pkl',
-    'knn': 'models/xray/knn.pkl'
+    'knn': 'models/xray/knn_model.pkl'
 }
 
 
@@ -486,6 +486,10 @@ class ChestXrayAnomalyDetector:
         if 'lof' in self.models:
             try:
                 model = self.models['lof']
+
+                if not getattr(model, 'novelty', False):
+                    raise ValueError("Model was trained with noelty=False. Must be retrained with novelty=True to predict on new X-ray images.")
+                
                 pred = model.predict(features_numpy)[0]
                 score = float(model.decision_function(features_numpy)[0]) if hasattr(model, 'decision_function') else None
                 
