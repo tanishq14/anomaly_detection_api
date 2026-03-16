@@ -47,7 +47,9 @@ export default function NetworkPage() {
     setResult(null);
 
     try {
-      const response = await fetch('/api/predict/network', {
+      const apiUrl= import.meta.env.VITE_API_URL || '';
+      
+      const response = await fetch(`${apiUrl}/api/predict/network`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)

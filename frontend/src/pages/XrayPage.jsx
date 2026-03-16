@@ -39,7 +39,9 @@ export default function XrayPage() {
     formData.append('analysis_type', analysisType);
 
     try {
-      const response = await fetch('/api/predict/xray', {
+      const apiUrl= import.meta.env.VITE_API_URL || '';
+      
+      const response = await fetch(`${apiUrl}/api/predict/xray`, {
         method: 'POST',
         body: formData
       });

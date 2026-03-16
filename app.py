@@ -293,12 +293,7 @@ if __name__ == '__main__':
     logger.info(f"Upload folder: {app.config['UPLOAD_FOLDER']}")
     logger.info(f"Debug mode: {app.config['DEBUG']}")
     
-    print("\n📊 Available Endpoints:")
-    print("   - Homepage:        http://localhost:5000/")
-    print("   - Network:         http://localhost:5000/network")
-    print("   - MVTec:           http://localhost:5000/mvtec")
-    print("   - X-ray:           http://localhost:5000/xray")
-    print("\n🔌 API Endpoints:")
+    print("\n🔌 Available API Endpoints:")
     print("   - POST /api/predict/network")
     print("   - POST /api/predict/mvtec")
     print("   - POST /api/predict/xray")

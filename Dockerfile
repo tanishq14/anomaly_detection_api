@@ -13,12 +13,15 @@ RUN apt-get update && apt-get install -y \
 # Copy requirements and install them
 COPY requirements.txt .
 RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
+# Install gdown for Google Drive downloading
+RUN pip install gdown
 
 # Copy the rest of the backend code
 COPY . .
 
-# Expose Flask's default port
-EXPOSE 5000
+# Expose Hugging Face's required port
+EXPOSE 7860
 
-# Start the Flask app
-CMD ["python", "app.py"]
+# 1. Download the models from Google Drive
+# 2. Start the Flask app
+CMD python download_models.py && python app.py

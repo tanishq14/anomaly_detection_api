@@ -39,7 +39,9 @@ export default function MVTecPage() {
     formData.append('file', file);
 
     try {
-      const response = await fetch('/api/predict/mvtec', {
+        const apiUrl= import.meta.env.VITE_API_URL || '';
+      
+        const response = await fetch(`${apiUrl}/api/predict/mvtec`, {
         method: 'POST',
         body: formData
       });
