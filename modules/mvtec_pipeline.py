@@ -149,7 +149,7 @@ class MVTecAnomalyDetector:
         # Preprocessing transform
         self.transform = transforms.Compose([
             transforms.Grayscale(),
-            transforms.Resize((DATASET_CONFIG['image_size'], DATASET_CONFIG['image_size'])),
+            transforms.Resize((224, 224)),
             transforms.ToTensor(),
             transforms.Lambda(lambda x: x.repeat(3, 1, 1)),  # Convert to 3-channel
             transforms.Normalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5))
@@ -160,7 +160,7 @@ class MVTecAnomalyDetector:
         if self.resnet is None:
             raise RuntimeError("ResNet feature extractor not loaded")
         
-        img = Image.open(image_path).convert('L')
+        img = Image.open(image_path).convert('RGB')
         img_tensor = self.transform(img).unsqueeze(0).to(self.device)
         
         with torch.no_grad():

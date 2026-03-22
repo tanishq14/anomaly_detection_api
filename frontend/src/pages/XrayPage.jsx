@@ -8,6 +8,7 @@ export default function XrayPage() {
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleFileChange = (selectedFile) => {
     if (selectedFile && selectedFile.type.startsWith('image/')) {
@@ -25,6 +26,21 @@ export default function XrayPage() {
     e.preventDefault(); setIsDragging(false);
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       handleFileChange(e.dataTransfer.files[0]);
+    }
+  };
+
+  const loadSampleImage = async (imagePath, fileName) => {
+    try {
+      setIsModalOpen(false); 
+      setError(null);
+
+      const response = await fetch(imagePath);
+      const blob = await response.blob();
+      
+      const sampleFile = new File([blob], fileName, { type: blob.type });
+      handleFileChange(sampleFile);
+    } catch (err) {
+      setError(`Failed to load sample image from ${imagePath}`);
     }
   };
 
@@ -109,6 +125,60 @@ export default function XrayPage() {
             </ul>
         </div>
         
+        {/* Sample Images Modal Setup */}
+        <div className="sample-images-section mb-4">
+            <button type="button" className="btn-secondary" onClick={() => setIsModalOpen(true)}>
+                📁 View Sample Images
+            </button>
+            
+            {isModalOpen && (
+              <div className="modal show" onClick={() => setIsModalOpen(false)}>
+                  <div className="modal-content" onClick={e => e.stopPropagation()}>
+                      <span className="close-modal" onClick={() => setIsModalOpen(false)}>&times;</span>
+                      <h3>Sample Images for Testing</h3>
+                      <p>Download these examples to test the diagnostic system:</p>
+                      <div className="sample-grid">
+                          <div className="sample-item">
+                              <div className="sample-preview normal-sample"> Normal Lungs</div>
+                              <button 
+                                  className="download-sample"
+                                  onClick={() => loadSampleImage('/xray/Normal_Lungs.png', 'Normal_Lungs.png')}
+                                  >
+                                  Download
+                              </button>
+                          </div>
+                          <div className="sample-item">
+                              <div className="sample-preview defect-sample">🫁 Emphysema</div>
+                              <button 
+                                  className="download-sample"
+                                  onClick={() => loadSampleImage('/xray/Emphysema.png', 'Emphysema.png')}
+                                  >
+                                  Download
+                              </button>
+                          </div>
+                          <div className="sample-item">
+                              <div className="sample-preview normal-sample">💨 Pneumothorax</div>
+                              <button 
+                                  className="download-sample"
+                                  onClick={() => loadSampleImage('/xray/Pneumothorax.png', 'Pneumothorax.png')}
+                                  >
+                                  Download
+                              </button>
+                          </div>
+                          <div className="sample-item">
+                              <div className="sample-preview defect-sample">❤️ Cardiomegaly</div>
+                              <button 
+                                  className="download-sample"
+                                  onClick={() => loadSampleImage('/xray/Cardiomegaly.png', 'Cardiomegaly.png')}
+                                  >
+                                  Download
+                              </button>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+            )}
+          </div>
         {/* Upload Form */}
         <form onSubmit={handleSubmit}>
           <div 

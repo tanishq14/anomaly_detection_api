@@ -29,6 +29,21 @@ export default function MVTecPage() {
     }
   };
 
+  const loadSampleImage = async (imagePath, fileName) => {
+    try {
+      setIsModalOpen(false); 
+      setError(null);
+
+      const response = await fetch(imagePath);
+      const blob = await response.blob();
+      
+      const sampleFile = new File([blob], fileName, { type: blob.type });
+      handleFileChange(sampleFile);
+    } catch (err) {
+      setError(`Failed to load sample image from ${imagePath}`);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!file) return setError('Please select an image first.');
@@ -116,20 +131,40 @@ export default function MVTecPage() {
                     <p>Download these examples to test the system:</p>
                     <div className="sample-grid">
                         <div className="sample-item">
-                            <div className="sample-preview normal-sample">✅ Normal Bottle</div>
-                            <button className="download-sample">Download</button>
+                            <div className="sample-preview normal-sample">✅ Normal Grid</div>
+                            <button 
+                                className="download-sample"
+                                onClick={() => loadSampleImage('/mvtec/normal-grid.png', 'normal-grid.png')}
+                                >
+                                Download
+                                </button>
                         </div>
                         <div className="sample-item">
-                            <div className="sample-preview defect-sample">❌ Defective Bottle</div>
-                            <button className="download-sample">Download</button>
+                            <div className="sample-preview defect-sample">❌ Defective Grid</div>
+                            <button 
+                                className="download-sample"
+                                onClick={() => loadSampleImage('/mvtec/defective-grid.png', 'defective-grid.png')}
+                                >
+                                Download
+                                </button>
                         </div>
                         <div className="sample-item">
-                            <div className="sample-preview normal-sample">✅ Normal Cable</div>
-                            <button className="download-sample">Download</button>
+                            <div className="sample-preview normal-sample">✅ Normal Wood</div>
+                            <button 
+                                className="download-sample"
+                                onClick={() => loadSampleImage('/mvtec/normal-wood.png', 'normal-wood.png')}
+                                >
+                                Download
+                                </button>
                         </div>
                         <div className="sample-item">
-                            <div className="sample-preview defect-sample">❌ Defective Cable</div>
-                            <button className="download-sample">Download</button>
+                            <div className="sample-preview defect-sample">❌ Defective Wood</div>
+                            <button 
+                                className="download-sample"
+                                onClick={() => loadSampleImage('/mvtec/defective-wood.png', 'defective-wood.png')}
+                                >
+                                Download
+                                </button>
                         </div>
                     </div>
                 </div>
