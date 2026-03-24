@@ -23,22 +23,22 @@ This project addresses the "Imbalanced Data" problem in Machine Learning. In rea
 
 > **Recruiter Note:** The following modules demonstrate the system's ability to adapt to entirely different data modalities (Tabular, RGB Vision, Grayscale Medical Vision).
 
-### 1. 🌐 Cybersecurity: Network Intrusion Detection
-* **Dataset:** UNSW-NB15 (2.5 million network flows, 44 dimensions)
+### 1. 🌐 Cybersecurity: Network Intrusion Detection 
+* **Dataset:** [UNSW-NB15](https://www.kaggle.com/datasets/mrwellsdavid/unsw-nb15) (2.5 million network flows, 44 dimensions)
 * **Strategy:** Analyzes raw network packet features to identify 9 distinct categories of malicious traffic.
 * **Models:** Isolation Forest, One-Class SVM, Elliptic Envelope, Local Outlier Factor (LOF).
 
 ![Network Dashboard Placeholder](docs/screenshots/network_dashboard.png)
 
-### 2. 🏭 Manufacturing: Product Quality Inspection
-* **Dataset:** MVTec AD (5,000+ high-resolution images across 15 product categories)
+### 2. 🏭 Manufacturing: Product Quality Inspection 
+* **Dataset:** [MVTec AD](https://www.mvtec.com/company/research/datasets/mvtec-ad) (5,000+ high-resolution images across 15 product categories)
 * **Strategy:** Uses Computer Vision to detect structural and visual defects (cracks, contamination, deformations) in industrial products.
 * **Models:** ResNet34 (Feature Extraction) + 4 Anomaly Detectors.
 
 ![MVTec Dashboard Placeholder](docs/screenshots/mvtec_inspection.png)
 
-### 3. 🏥 Healthcare: Chest X-ray Diagnostics
-* **Dataset:** NIH Chest X-ray14 (112,120 frontal chest X-ray images)
+### 3. 🏥 Healthcare: Chest X-ray Diagnostics 
+* **Dataset:**[NIH Chest X-ray14](https://www.kaggle.com/datasets/nih-chest-xrays/data) (112,120 frontal chest X-ray images)
 * **Strategy:** Provides AI-assisted diagnostic analysis to detect 14 thoracic conditions (e.g., Pneumonia, Cardiomegaly, Atelectasis).
 * **Models:** Unsupervised (Autoencoder, Isolation Forest, etc.) + Supervised (Decision Tree, KNN).
 
@@ -122,7 +122,8 @@ Go to: [Docker Desktop](https://docs.docker.com/docker-for-windows/install/)
 ### Start the API Server
 
 ```Bash
-docker-compose up
+docker-compose up --build
+
 ```
 
 ## 📚 API Documentation
@@ -159,30 +160,6 @@ docker-compose up
 }
 }
 ```
-
----
-
-## 📊 Datasets
-
-### Network: [UNSW-NB15](https://www.kaggle.com/datasets/mrwellsdavid/unsw-nb15)
-- **Records**: 2.5 million network flows
-- **Features**: 44 dimensions
-- **Attack Types**: 9 categories (DoS, Exploits, Reconnaissance, etc.)
-- **Split**: 80% train, 20% test
-
-### MVTec: [AD](https://www.mvtec.com/company/research/datasets/mvtec-ad)
-- **Images**: 5,000+ high-resolution product images
-- **Categories**: 15 product types
-- **Defects**: Cracks, scratches, contamination, missing parts
-- **Split**: Per-category train/test
-
-### X-ray: [NIH Chest X-ray14](https://www.kaggle.com/datasets/nih-chest-xrays/data)
-- **Images**: 112,120 frontal chest X-rays
-- **Conditions**: 14 thoracic pathologies
-- **Classes**: Multi-label classification
-- **Resolution**: 224x224 (preprocessed)
-
-<!-- For dataset details, see [DATASETS.md](docs/DATASETS.md) -->
 
 ---
 
@@ -262,7 +239,7 @@ print(f"{model}: {data['prediction']} ({data['confidence']:.1f}%)")
 
 1. Navigate to https://anomaly-detection-api.vercel.app/
 2. Select a detection module
-3. Upload image or enter data
+3. Open a Sample Image
 4. View comprehensive results with visualizations
 
 ---
@@ -278,30 +255,6 @@ print(f"{model}: {data['prediction']} ({data['confidence']:.1f}%)")
 *Metrics calculated on respective test sets using ensemble predictions*
 
 ---
-
-## 🧪 Testing
-
-
-
-<!-- ## 🚢 Deployment
-
-For production deployment:
-
-1. **Set production config** in `app.py`:
-app.config['DEBUG'] = False
-
-2. **Use production server** (e.g., Gunicorn):
-pip install gunicorn
-gunicorn -w 4 -b 0.0.0.0:8000 app:app
-
-
-3. **Set up reverse proxy** (Nginx/Apache)
-
-4. **Enable HTTPS** with SSL certificates
-
-See [DEPLOYMENT.md](docs/DEPLOYMENT.md) for detailed instructions. -->
-
-<!-- --- -->
 
 ## 🤝 Contributing
 
@@ -352,7 +305,6 @@ For issues, questions, or suggestions:
 **⭐ If you find this project useful, please consider giving it a star!**
 
 *Last Updated: March 23, 2026*
-# anomaly_detection_api
 
 ## 📄 License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
