@@ -29,7 +29,6 @@ This project addresses the "Imbalanced Data" problem in Machine Learning. In rea
 * **Models:** Isolation Forest, One-Class SVM, Elliptic Envelope, Local Outlier Factor (LOF).
 
 ![Network Dashboard Placeholder](docs/screenshots/network_dashboard.png)
-*(Add a screenshot of your Network Page showing the confidence bars and ensemble voting)*
 
 ### 2. 🏭 Manufacturing: Product Quality Inspection
 * **Dataset:** MVTec AD (5,000+ high-resolution images across 15 product categories)
@@ -37,7 +36,6 @@ This project addresses the "Imbalanced Data" problem in Machine Learning. In rea
 * **Models:** ResNet34 (Feature Extraction) + 4 Anomaly Detectors.
 
 ![MVTec Dashboard Placeholder](docs/screenshots/mvtec_inspection.png)
-*(Add a screenshot of the MVTec page showing an image upload and the resulting defect detection)*
 
 ### 3. 🏥 Healthcare: Chest X-ray Diagnostics
 * **Dataset:** NIH Chest X-ray14 (112,120 frontal chest X-ray images)
@@ -45,7 +43,7 @@ This project addresses the "Imbalanced Data" problem in Machine Learning. In rea
 * **Models:** Unsupervised (Autoencoder, Isolation Forest, etc.) + Supervised (Decision Tree, KNN).
 
 ![X-Ray Dashboard Placeholder](docs/screenshots/xray_analysis.png)
-*(Add a screenshot of the X-ray page highlighting the medical disclaimer, the condition breakdown, and the warning UI)*
+
 
 ---
 
