@@ -138,8 +138,7 @@ docker-compose up
 | `POST` | `/api/predict/network` | Network intrusion detection |
 | `POST` | `/api/predict/mvtec` | Product quality inspection |
 | `POST` | `/api/predict/xray` | Chest X-ray analysis |
-| `GET` | `/api/health` | Health check |
-| `GET` | `/api/models/info` | Model information |
+
 
 ### Response Format
 
